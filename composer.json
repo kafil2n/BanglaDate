@@ -17,6 +17,6 @@
         "php": ">=5.2.4"
     },
     "autoload": {
-        "psr-4": {"BanglaDate\\": "lib/bangladate"}
+        "psr-4": {"bangladate\\": "lib/bangladate"}
     }
 }
