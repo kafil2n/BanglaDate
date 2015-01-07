@@ -1,16 +1,13 @@
 <?php
 namespace bangladate;
 
-class BanglaCalendar
+class BanglaCalendar extends DateTimeRef
 {
-    private $timestamp;	//timestamp as input
     private $morning;	//when the date will change?
-
     private $engHour;	//Current hour of English Date
     private $engDate;	//Current date of English Date
     private $engMonth;	//Current month of English Date
     private $engYear;	//Current year of English Date
-
     private $bangDate;	//generated Bangla Date
     private $bangMonth;	//generated Bangla Month
     private $bangYear;	//generated Bangla	Year
@@ -22,22 +19,20 @@ class BanglaCalendar
      * @param	int, set the time when you want to change the date. if 0, then date will change instantly.
      *			If it's 6, date will change at 6'0 clock at the morning. Default is 6'0 clock at the morning
      */
-    function __construct($timestamp, $hour = 6)
+    public function __construct($time = "now", $timezone = "Asia/Dhaka", $hour = 6)
     {
-        $this->BanglaDate($timestamp, $hour);
+        parent::__construct($time);
+        $this->_setTimezone($timezone);
+        $this->engDate = $this->_format('d');
+        $this->engMonth = $this->_format('m');
+        $this->engYear = $this->_format('Y');
+        $this->morning = $hour;
+        $this->engHour = $this->_format('G');
+        $this->get_bangla_date();
     }
 
-    /*
-    * PHP4 Legacy constructor
-    */
-    public function BanglaDate($timestamp, $hour = 6)
+    private function get_bangla_date()
     {
-        $this->engDate = date('d', $timestamp);
-        $this->engMonth = date('m', $timestamp);
-        $this->engYear = date('Y', $timestamp);
-        $this->morning = $hour;
-        $this->engHour = date('G', $timestamp);
-
         //calculate the bangla date
         $this->calculate_date();
 
@@ -48,15 +43,11 @@ class BanglaCalendar
         $this->convert();
     }
 
-    public function set_time($timestamp, $hour = 6)
-    {
-        $this->BanglaDate($timestamp, $hour);
-    }
 
     /*
      * Calculate the Bangla date and month
      */
-    public function calculate_date()
+    private function calculate_date()
     {
         //when English month is January
         if($this->engMonth == 1)
@@ -773,7 +764,7 @@ class BanglaCalendar
      *
      * @return boolen. True if it's leap year or returns false
      */
-    public function is_leapyear()
+    private function is_leapyear()
     {
         if($this->engYear%400 ==0 || ($this->engYear%100 != 0 && $this->engYear%4 == 0))
             return true;
@@ -784,7 +775,7 @@ class BanglaCalendar
     /*
      * Calculate the Bangla Year
      */
-    public function calculate_year()
+    private function calculate_year()
     {
         if($this->engMonth >= 4)
         {
@@ -817,7 +808,7 @@ class BanglaCalendar
      * @param int any integer number
      * @return string as converted number to bangla
      */
-    public function bangla_number($int)
+    private function bangla_number($int)
     {
         $engNumber = array(1,2,3,4,5,6,7,8,9,0);
         $bangNumber = array('১','২','৩','৪','৫','৬','৭','৮','৯','০');
@@ -829,7 +820,7 @@ class BanglaCalendar
     /*
      * Calls the converter to convert numbers to equivalent Bangla number
      */
-    public function convert()
+    private function convert()
     {
         $this->bangDate = $this->bangla_number($this->bangDate);
         $this->bangYear = $this->bangla_number($this->bangYear);

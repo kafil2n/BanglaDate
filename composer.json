@@ -5,8 +5,12 @@
     "keywords": ["BanglaDate"],
     "authors": [
         {
-            "name": "Tareq Hasan",
+            "name": "Tareq Hasan(BanglaCalendar)",
             "homepage": "http://tareq.weDevs.com"
+        },
+		{
+            "name": "Hasan Muhammad Kafi",
+            "email": "kafi@l2nsoft.com"
         }
     ],
     "require": {

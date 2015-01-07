@@ -1,30 +1,34 @@
 <?php
-namespace bangladate; 
+namespace bangladate;
 
 
-class EnglishDateInBangla
+class EnglishDateInBangla extends DateTimeRef
 {
 
-
     private $date = '';
-    private $cdate = '';
-    private $ind = '';
-    private $cind = '';
+    private $cDate = '';
+    private $format = '';
 
-    public function set_date($date = '')
+    public function __construct($time = "now" , $timezone = "Asia/Dhaka")
     {
-        if (empty($date) || $date == '' || ! isset($date))
-        {
-            $this->date = date('F - j,Y');
-        }
-        else
-        {
-            $this->date = $date;
-        }
-
+        parent::__construct($time);
+        $this->_setTimezone($timezone);
     }
 
-    public function convert()
+
+    private function set_format($format = 'F - j,Y')
+    {
+        $this->format = $format;
+    }
+
+
+    private function convert_into_output_format()
+    {
+        $this->date = $this->_format($this->format);
+    }
+
+
+    private function convert_into_bangla()
     {
         $engArray = array(
             1,2,3,4,5,6,7,8,9,0,
@@ -38,29 +42,15 @@ class EnglishDateInBangla
             'সকাল', 'দুপুর', 'শনিবার', 'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার'
         );
 
-        $this->cdate = str_replace($engArray, $bangArray, $this->date);
-        $this->cind = str_replace($engArray, $bangArray, $this->ind);
+        $this->cDate = str_replace($engArray, $bangArray, $this->date);
     }
 
-    public function get_date()
+    public function get_date($format = 'd-m-Y')
     {
-        return $this->cdate;
+        $this->set_format($format);
+        $this->convert_into_output_format();
+        $this->convert_into_bangla();
+        return $this->cDate;
     }
 
-    public function set_ind($ind = '')
-    {
-        if (empty($ind) || $ind == '' || ! isset($ind))
-        {
-            $this->ind = date('l');
-        }
-        else
-        {
-            $this->ind = $ind;
-        }
-    }
-
-    public function get_ind()
-    {
-        return $this->cind;
-    }
 }
