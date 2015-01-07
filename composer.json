@@ -1,0 +1,18 @@
+{
+    "name": "kafil2n/BanglaDate",
+    "type": "library",
+    "description": "Bangla Date, English date in bangla",
+    "keywords": ["BanglaDate"],
+    "authors": [
+        {
+            "name": "Tareq Hasan",
+            "homepage": "http://tareq.weDevs.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.4"
+    },
+    "autoload": {
+        "psr-4": {"BanglaDate\\": "lib/bangladate"}
+    }
+}
